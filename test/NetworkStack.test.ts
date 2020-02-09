@@ -1,11 +1,11 @@
 import { expect as expectCDK, matchTemplate, MatchStyle } from '@aws-cdk/assert';
 import * as cdk from '@aws-cdk/core';
-import Haproxytest = require('../lib/haproxytest-stack');
+import NetworkStack = require('../lib/NetworkStack');
 
-test('Empty Stack', () => {
+test('Network Stack', () => {
     const app = new cdk.App();
     // WHEN
-    const stack = new Haproxytest.HaproxytestStack(app, 'MyTestStack');
+    const stack = new NetworkStack.NetworkStack(app, 'MyTestStack');
     // THEN
     expectCDK(stack).to(matchTemplate({
       "Resources": {}
