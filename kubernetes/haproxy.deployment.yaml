@@ -19,4 +19,4 @@ spec:
         - name: haproxy
           image: HaProxyRepository:latest # need to put the full ECR image path here, should use versions
           ports:
-            - containerPort: 80
+            - containerPort: 5000
