@@ -1,6 +1,6 @@
 import * as cdk from '@aws-cdk/core';
-import {InstanceClass, InstanceSize, InstanceType, SubnetType, Vpc} from '@aws-cdk/aws-ec2';
-import {Cluster} from '@aws-cdk/aws-eks';
+import { InstanceClass, InstanceSize, InstanceType, SubnetType, Vpc } from '@aws-cdk/aws-ec2';
+import { Cluster } from '@aws-cdk/aws-eks';
 
 type KubernetesStackProps = {
   vpc: Vpc;
@@ -10,7 +10,8 @@ type KubernetesStackProps = {
  * Create a managed kubernetes cluster with a default capacity of 2 M5.large machines.
  * Place the machines in the private VPC subnet (this creates a cross stack cloudformation reference).
  *
- * In production we would probably use an auto scaling group.
+ * In production we would probably use an auto scaling group or even better a fargate profile and
+ * not have to manage instances at all.
  *
  * I am also skipping adding any bastion hosts for SSH into the nodes. In production I would
  * probably skip this and use the systems manager to connect directly via its agent setup in a boot script
@@ -28,10 +29,12 @@ export class KubernetesStack extends cdk.Stack {
       defaultCapacity: 2,
       defaultCapacityInstance: InstanceType.of(InstanceClass.M5, InstanceSize.LARGE),
       // Set the subnet selection for the cluster, use the private subnet and spread out of the AZs
-      vpcSubnets: [{
-        onePerAz: true,
-        subnetType: SubnetType.PRIVATE
-      }]
-    })
+      vpcSubnets: [
+        {
+          onePerAz: true,
+          subnetType: SubnetType.PRIVATE,
+        },
+      ],
+    });
   }
 }
